@@ -24,13 +24,6 @@ public class MapFileManager : MonoBehaviour
     [Header("Refreshing")]
     [SerializeField] private JsonRefreshing refresher;
 
-    private const string MapsFolderName = "MAPS";
-
-    private string MapsFolderPath
-    {
-        get { return Path.Combine(Application.dataPath, MapsFolderName); }
-    }
-
     private void Awake()
     {
         if (addButton != null)
@@ -58,7 +51,7 @@ public class MapFileManager : MonoBehaviour
     {
         if (subPanel != null)
         {
-            // ÿ�δ�ǰ��������
+            // 每次打开前清空输入框
             if (nameInput != null) nameInput.text = string.Empty;
             if (heightInput != null) heightInput.text = string.Empty;
             if (widthInput != null) widthInput.text = string.Empty;
@@ -74,6 +67,10 @@ public class MapFileManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 新建地图：直接生成"全道路"的完整地图数据（含每格信息），
+    /// 和编辑器里保存出来的是同一种格式，不再写只有宽高的旧格式。
+    /// </summary>
     public void CommitAndClose()
     {
         string rawName = nameInput != null ? nameInput.text.Trim() : string.Empty;
@@ -87,44 +84,29 @@ public class MapFileManager : MonoBehaviour
         int width;
 
         if (heightInput == null ||
-            !int.TryParse(heightInput.text.Trim(), NumberStyles.Integer, CultureInfo.InvariantCulture, out height))
+            !int.TryParse(heightInput.text.Trim(), NumberStyles.Integer, CultureInfo.InvariantCulture, out height) || height <= 0)
         {
             Debug.LogWarning("[MapFileManager] Height is invalid.");
             return;
         }
 
         if (widthInput == null ||
-            !int.TryParse(widthInput.text.Trim(), NumberStyles.Integer, CultureInfo.InvariantCulture, out width))
+            !int.TryParse(widthInput.text.Trim(), NumberStyles.Integer, CultureInfo.InvariantCulture, out width) || width <= 0)
         {
             Debug.LogWarning("[MapFileManager] Width is invalid.");
             return;
         }
 
-        MapData data = new MapData
-        {
-            Height = height,
-            Width = width
-        };
-
-        string json = JsonUtility.ToJson(data, true);
         string safeName = SanitizeFileName(rawName);
-        string filePath = Path.Combine(MapsFolderPath, safeName + ".json");
+        MapFileData data = MapFileData.Create(width, height);
 
-        try
+        if (!MapJson.Save(safeName, data))
         {
-            Directory.CreateDirectory(MapsFolderPath);
-            File.WriteAllText(filePath, json);
-            Debug.Log("[MapFileManager] Saved: " + filePath);
-        }
-        catch (Exception e)
-        {
-            Debug.LogError("[MapFileManager] Save failed: " + e.Message);
+            Debug.LogError("[MapFileManager] Save failed: " + MapJson.FileFor(safeName));
             return;
         }
 
-#if UNITY_EDITOR
-        UnityEditor.AssetDatabase.Refresh();
-#endif
+        Debug.Log("[MapFileManager] Saved: " + MapJson.FileFor(safeName));
 
         if (refresher != null)
         {
@@ -148,12 +130,5 @@ public class MapFileManager : MonoBehaviour
         }
 
         return new string(chars);
-    }
-
-    [Serializable]
-    private class MapData
-    {
-        public int Height;
-        public int Width;
     }
 }

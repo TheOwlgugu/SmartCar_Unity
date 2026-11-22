@@ -1,0 +1,16 @@
+{
+  "Version": 1,
+  "Height": 3,
+  "Width": 3,
+  "Cells": [
+    {"X":0,"Y":0,"N":true,"E":true,"S":false,"W":false,"R":true},
+    {"X":1,"Y":0,"N":false,"E":true,"S":false,"W":true,"R":true},
+    {"X":2,"Y":0,"N":true,"E":false,"S":false,"W":true,"R":true},
+    {"X":0,"Y":1,"N":true,"E":false,"S":true,"W":false,"R":true},
+    {"X":1,"Y":1,"N":false,"E":false,"S":false,"W":false,"R":false},
+    {"X":2,"Y":1,"N":true,"E":false,"S":true,"W":false,"R":true},
+    {"X":0,"Y":2,"N":false,"E":true,"S":true,"W":false,"R":true},
+    {"X":1,"Y":2,"N":false,"E":true,"S":false,"W":true,"R":true},
+    {"X":2,"Y":2,"N":false,"E":false,"S":true,"W":true,"R":true}
+  ]
+}

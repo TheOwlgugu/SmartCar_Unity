@@ -1,116 +1,48 @@
-using System;
-using System.IO;
 using TMPro;
 using UnityEngine;
 
+/// <summary>
+/// Edit åœºæ™¯çš„å¼•å¯¼è„šæœ¬ï¼šæ‹¿åœ°å›¾å â†’ äº¤ç»™ EditMap åŠ è½½ â†’ æŠŠå®½é«˜å›å¡«ç»™ EditManagerã€‚
+/// æœ¬èº«ä¸æŒæœ‰ä»»ä½•åœ°å›¾æ•°æ®ã€‚
+/// </summary>
 public class EditInitializer : MonoBehaviour
 {
-    [Header("UI References")]
+    [Header("UI")]
     [SerializeField] private TMP_Text nameDisplayText;
-    [SerializeField] private TMP_InputField widthInput;  // ĞÂÔö£º¿íÊäÈë¿ò
-    [SerializeField] private TMP_InputField heightInput; // ĞÂÔö£º¸ßÊäÈë¿ò
 
-    [Header("Map Settings")]
-    [SerializeField] private Transform mapRoot;
-    [SerializeField] private GameObject pointPrefab;
-
-    private const string MapsFolderName = "MAPS";
+    [Header("å¼•ç”¨ï¼ˆç•™ç©ºä¼šè‡ªåŠ¨åœ¨åœºæ™¯é‡Œæ‰¾ï¼‰")]
+    [SerializeField] private EditMap editMap;
+    [SerializeField] private EditManager editManager;
 
     private void Start()
     {
-        string mapName = SceneData.SelectedMapName;
+        if (editMap == null) editMap = FindObjectOfType<EditMap>();
+        if (editManager == null) editManager = FindObjectOfType<EditManager>();
 
-        if (string.IsNullOrEmpty(mapName))
-        {
-            Debug.LogWarning("[EditInitializer] No map name received.");
-            if (nameDisplayText != null) nameDisplayText.text = "No Map Selected";
-            return;
-        }
+        string mapName = SceneData.SelectedMapName;
 
         if (nameDisplayText != null)
         {
-            nameDisplayText.text = mapName;
+            nameDisplayText.text = string.IsNullOrEmpty(mapName) ? "No Map Selected" : mapName;
         }
 
-        LoadMapData(mapName);
-    }
-
-    public void LoadMapData(string mapName)
-    {
-        string filePath = Path.Combine(Application.dataPath, MapsFolderName, mapName + ".json");
-        if (!File.Exists(filePath))
+        if (string.IsNullOrEmpty(mapName))
         {
-            Debug.LogError("[EditInitializer] JSON file not found: " + filePath);
+            Debug.LogWarning("[EditInitializer] æ²¡æœ‰æ”¶åˆ°åœ°å›¾åå­—");
             return;
         }
 
-        int width = 0;
-        int height = 0;
-
-        try
+        if (editMap == null)
         {
-            string json = File.ReadAllText(filePath);
-            MapData data = JsonUtility.FromJson<MapData>(json);
-            if (data != null)
-            {
-                width = data.Width;
-                height = data.Height;
-            }
-        }
-        catch (Exception e)
-        {
-            Debug.LogError("[EditInitializer] Failed to parse JSON: " + e.Message);
+            Debug.LogError("[EditInitializer] åœºæ™¯é‡Œæ‰¾ä¸åˆ° EditMapï¼Œè¯·æ–°å»ºä¸€ä¸ªç©ºç‰©ä½“æŒ‚ä¸Š EditMap å¹¶ç»‘å®šå­—æ®µ");
             return;
         }
 
-        // °Ñ¶Áµ½µÄÖµÌîÈëÊäÈë¿ò£¨×÷ÎªÏÔÊ¾£¬Ò²ÔÊĞíÓÃ»§ĞŞ¸Ä£©
-        if (widthInput != null) widthInput.text = width.ToString();
-        if (heightInput != null) heightInput.text = height.ToString();
+        editMap.LoadFromMap(mapName);
 
-        if (width > 0 && height > 0)
+        if (editManager != null)
         {
-            RebuildMap(width, height);
+            editManager.SetSizeText(editMap.Width, editMap.Height);
         }
-    }
-
-    // ±©Â¶¸ø EditManager µ÷ÓÃµÄÖØĞÂÉú³É½Ó¿Ú
-    public void RebuildMap(int width, int height)
-    {
-        if (mapRoot == null || pointPrefab == null) return;
-        ClearMap();
-        GenerateGrid(width, height);
-    }
-
-    private void ClearMap()
-    {
-        for (int i = mapRoot.childCount - 1; i >= 0; i--)
-        {
-            GameObject child = mapRoot.GetChild(i).gameObject;
-            child.SetActive(false);
-            Destroy(child);
-        }
-    }
-
-    private void GenerateGrid(int width, int height)
-    {
-        float startX = -(width - 1) * 0.5f;
-        float startZ = -(height - 1) * 0.5f;
-
-        for (int z = 0; z < height; z++) // ZÖá£ºÄÏ±± (Height)
-        {
-            for (int x = 0; x < width; x++) // XÖá£º¶«Î÷ (Width)
-            {
-                GameObject point = Instantiate(pointPrefab, mapRoot);
-                point.transform.localPosition = new Vector3(startX + x, 0f, startZ + z);
-                point.name = $"Point_X{x}_Z{z}";
-            }
-        }
-    }
-
-    [Serializable]
-    private class MapData
-    {
-        public int Height;
-        public int Width;
     }
 }
