@@ -55,8 +55,7 @@ public static class MapJson
         MapFileData data;
         try
         {
-            // 关键：JsonUtility 不会执行字段初始化器，所以这里 Version 可能是 0，
-            // 统一交给 Normalize() 修正。
+            // 关键：JsonUtility 不执行字段初始化器，未知字段（比如旧文件里的 Version）会被忽略。
             data = JsonUtility.FromJson<MapFileData>(json);
         }
         catch (Exception e)
@@ -104,7 +103,6 @@ public static class MapJson
 
         StringBuilder sb = new StringBuilder(128 + data.Cells.Length * 72);
         sb.Append("{\n");
-        sb.Append("  \"Version\": ").Append(Int(data.Version)).Append(",\n");
         sb.Append("  \"Height\": ").Append(Int(data.Height)).Append(",\n");
         sb.Append("  \"Width\": ").Append(Int(data.Width)).Append(",\n");
         sb.Append("  \"Cells\": [\n");

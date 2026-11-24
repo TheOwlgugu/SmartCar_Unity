@@ -5,35 +5,37 @@ using UnityEngine.UI;
 public class MapItemTransition : MonoBehaviour
 {
     [SerializeField] private Button editButton;
+    [SerializeField] private Button useButton;
+
+    private const string EditSceneName = "Edit";
+    private const string UseSceneName = "USE";
 
     private string mapName;
 
     private void Awake()
     {
-        if (editButton != null)
-        {
-            editButton.onClick.AddListener(GoToEditScene);
-        }
+        if (editButton != null) editButton.onClick.AddListener(GoToEditScene);
+        if (useButton != null) useButton.onClick.AddListener(GoToUseScene);
     }
 
-    // ÓÉ JsonRefreshing µ÷ÓÃ£¬´«ÈëÃû×Ö
+    // ç”± JsonRefreshing è°ƒç”¨ï¼Œä¼ å…¥åå­—
     public void Init(string name)
     {
         mapName = name;
     }
 
-    private void GoToEditScene()
+    private void GoToEditScene() { EnterScene(EditSceneName); }
+    private void GoToUseScene() { EnterScene(UseSceneName); }
+
+    private void EnterScene(string sceneName)
     {
         if (string.IsNullOrEmpty(mapName))
         {
-            Debug.LogWarning("[MapItemTransition] Map name is empty, cannot enter Edit scene.");
+            Debug.LogWarning("[MapItemTransition] åœ°å›¾åä¸ºç©ºï¼Œæ— æ³•è¿›å…¥ " + sceneName);
             return;
         }
 
-        // 1. °ÑÃû×Ö´æÈë¾²Ì¬Àà
         SceneData.SelectedMapName = mapName;
-
-        // 2. ÇĞ»»³¡¾°
-        SceneManager.LoadScene("Edit");
+        SceneManager.LoadScene(sceneName);
     }
 }

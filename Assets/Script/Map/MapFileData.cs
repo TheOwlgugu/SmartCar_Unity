@@ -27,10 +27,9 @@ public class MapCell
 [Serializable]
 public class MapFileData
 {
-    public const int CurrentVersion = 1;
     public const int MaxSide = 200;
 
-    public int Version = CurrentVersion;
+    // 版本号不在地图本体里，而在同名的 _M 文件里（见 MapMetaData）
     public int Height;
     public int Width;
     public MapCell[] Cells;
@@ -54,7 +53,6 @@ public class MapFileData
     public static MapFileData Create(int width, int height)
     {
         MapFileData data = new MapFileData();
-        data.Version = CurrentVersion;
         data.Width = Mathf.Clamp(width, 1, MaxSide);
         data.Height = Mathf.Clamp(height, 1, MaxSide);
         data.Cells = new MapCell[data.Width * data.Height];
@@ -75,7 +73,6 @@ public class MapFileData
     /// </summary>
     public void Normalize()
     {
-        Version = Version < 1 ? CurrentVersion : Version;
         Width = Mathf.Clamp(Width, 1, MaxSide);
         Height = Mathf.Clamp(Height, 1, MaxSide);
 

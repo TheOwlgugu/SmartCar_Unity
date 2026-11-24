@@ -47,6 +47,7 @@ public class MapItemView : MonoBehaviour
         }
 
         string assetPath = "Assets/" + MapsFolderName + "/" + mapName + ".json";
+        string metaAssetPath = "Assets/" + MapsFolderName + "/META/" + mapName + "_M.json";
 
 #if UNITY_EDITOR
         if (!UnityEditor.AssetDatabase.DeleteAsset(assetPath))
@@ -54,8 +55,12 @@ public class MapItemView : MonoBehaviour
             Debug.LogWarning("[MapItemView] DeleteAsset failed: " + assetPath);
             return;
         }
+
+        // _M 可能不存在（旧地图），删不掉也不算错
+        UnityEditor.AssetDatabase.DeleteAsset(metaAssetPath);
 #else
         string path = Path.Combine(Application.dataPath, MapsFolderName, mapName + ".json");
+        string metaPath = Path.Combine(Application.dataPath, MapsFolderName, "META", mapName + "_M.json");
 
         try
         {
@@ -68,6 +73,8 @@ public class MapItemView : MonoBehaviour
                 Debug.LogWarning("[MapItemView] File not found: " + path);
                 return;
             }
+
+            if (File.Exists(metaPath)) File.Delete(metaPath);
         }
         catch (Exception e)
         {

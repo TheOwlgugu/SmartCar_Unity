@@ -37,15 +37,14 @@ public static class TransformMap
         return mask;
     }
 
-    /// <summary>网络层发送前调用：得到 {"Version":1,"Width":..,"Height":..,"Cells":[..]} 的紧凑串。</summary>
+    /// <summary>网络层发送前调用：得到 {"Width":..,"Height":..,"Cells":[..]} 的紧凑串（版本号在 _M 里，不在这里）。</summary>
     public static string EncodePayload(MapFileData data)
     {
         if (data == null) return null;
 
         int[] mask = EncodeCells(data);
         StringBuilder sb = new StringBuilder(64 + mask.Length * 3);
-        sb.Append("{\"Version\":").Append(data.Version.ToString())
-          .Append(",\"Width\":").Append(data.Width.ToString())
+        sb.Append("{\"Width\":").Append(data.Width.ToString())
           .Append(",\"Height\":").Append(data.Height.ToString())
           .Append(",\"Cells\":[");
         for (int i = 0; i < mask.Length; i++)

@@ -1,0 +1,27 @@
+=== MapSchemaCheck ===
+[PASS] Create(3,3) 尺寸  (3x3)
+[PASS] Create 默认全道路  (9 roads, 1 components)
+[PASS] EncodeCells == 黄金值  (got [19,27,25,23,31,29,22,30,28])
+[PASS] EncodePayload 逐字节一致  ({"Version":1,"Width":3,"Height":3,"Cells":[19,27,25,23,31,29,22,30,28]})
+[PASS] 每格一行（9 行）  (got 9)
+[PASS] Write→Read 无损
+[PASS] 旧格式能解析  (ok)
+[PASS] 旧格式补齐为全道路  (4 cells, 4 roads)
+[PASS] 旧格式 Version 归 1  (got 1)
+[PASS] 中心格 R=false
+[PASS] 邻格方向位同步清空  (E=False W=False N=False S=False)
+[PASS] 中心格方向位全清
+[PASS] 挖空中心后仍是 1 个连通块（环形）  (got 1)
+[PASS] 整行封死后 2 个连通块  (got 2)
+[PASS] Resize 尺寸  (5x4)
+[PASS] 西南角旧数据保留  (期望 false)
+[PASS] 新增格默认道路
+[PASS] 新边界外向位为 0
+[PASS] 缩回 3x3 尺寸  (3x3)
+[PASS] 缩回后西南角仍是墙
+[PASS] 读取 a  (30x20, 459 roads)
+[PASS] 读取 b  (34x23, 653 roads)
+[PASS] 读取 c  (45x34, 1341 roads)
+[PASS] 读取 d  (55x200, 11000 roads)
+[PASS] 读取 demo  (3x3, 8 roads)
+RESULT: ALL PASS

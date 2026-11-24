@@ -455,7 +455,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 157950618}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -474,6 +474,7 @@ GameObject:
   - component: {fileID: 300100345}
   - component: {fileID: 300100344}
   - component: {fileID: 300100346}
+  - component: {fileID: 300100347}
   m_Layer: 5
   m_Name: Change
   m_TagString: Untagged
@@ -583,6 +584,20 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &300100347
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 300100342}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 60d825e01ea660f43940ca8466869d6f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playOnPress: 1
+  clip: {fileID: 0}
 --- !u!1 &314601571
 GameObject:
   m_ObjectHideFlags: 0
@@ -697,6 +712,7 @@ MonoBehaviour:
   maxSpeed: 100
   speedScrollStep: 5
   moveOnXZPlane: 1
+  minHeight: 1
 --- !u!1 &446604265
 GameObject:
   m_ObjectHideFlags: 0
@@ -1206,6 +1222,7 @@ GameObject:
   - component: {fileID: 726039327}
   - component: {fileID: 726039326}
   - component: {fileID: 726039325}
+  - component: {fileID: 726039328}
   m_Layer: 5
   m_Name: Wall
   m_TagString: Untagged
@@ -1315,6 +1332,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 726039323}
   m_CullTransparentMesh: 1
+--- !u!114 &726039328
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 726039323}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 60d825e01ea660f43940ca8466869d6f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playOnPress: 1
+  clip: {fileID: 0}
 --- !u!1 &846421657
 GameObject:
   m_ObjectHideFlags: 0
@@ -1840,6 +1871,7 @@ GameObject:
   - component: {fileID: 1045695726}
   - component: {fileID: 1045695725}
   - component: {fileID: 1045695727}
+  - component: {fileID: 1045695728}
   m_Layer: 5
   m_Name: Quit
   m_TagString: Untagged
@@ -1949,6 +1981,20 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &1045695728
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1045695723}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 60d825e01ea660f43940ca8466869d6f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playOnPress: 1
+  clip: {fileID: 0}
 --- !u!1 &1107718437
 GameObject:
   m_ObjectHideFlags: 0
@@ -1977,7 +2023,7 @@ Light:
   serializedVersion: 10
   m_Type: 1
   m_Shape: 0
-  m_Color: {r: 1, g: 0.95686275, b: 0.8392157, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Intensity: 1
   m_Range: 10
   m_SpotAngle: 30
@@ -2036,13 +2082,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1107718437}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.40821788, y: -0.23456968, z: 0.10938163, w: 0.8754261}
+  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!1 &1148202331
 GameObject:
   m_ObjectHideFlags: 0
@@ -2075,8 +2121,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   nameDisplayText: {fileID: 1332900877}
-  editMap: {fileID: 0}
-  editManager: {fileID: 0}
+  editMap: {fileID: 1148202335}
+  editManager: {fileID: 1148202334}
 --- !u!4 &1148202333
 Transform:
   m_ObjectHideFlags: 0
@@ -2104,11 +2150,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d8c70e5bf395fe4594cb1fead39ff72, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  editMap: {fileID: 0}
+  editMap: {fileID: 1148202335}
   quitButton: {fileID: 1045695727}
   applyButton: {fileID: 300100346}
-  roadButton: {fileID: 0}
-  wallButton: {fileID: 0}
+  roadButton: {fileID: 1227177271}
+  wallButton: {fileID: 726039325}
   widthInput: {fileID: 991901524}
   heightInput: {fileID: 89443851}
   roadButtonGraphic: {fileID: 1227177272}
@@ -2128,9 +2174,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mapRoot: {fileID: 157950619}
-  pointPrefab: {fileID: 0}
-  roadMaterial: {fileID: 0}
-  wallMaterial: {fileID: 0}
+  pointPrefab: {fileID: 5213501387397996483, guid: b8bf4b828d06df84391da8fad6ef1c11, type: 3}
+  roadMaterial: {fileID: 2100000, guid: 8a14a12c7314f254097573e579618dbe, type: 2}
+  wallMaterial: {fileID: 2100000, guid: 2ec4a190610683b4988400cc2433c912, type: 2}
   cellGuidePrefab: {fileID: 2861414654656567499, guid: b69ec10361eb84648bd29819b57a82e6, type: 3}
   guideRoot: {fileID: 0}
   height: 0.5
@@ -2147,6 +2193,7 @@ GameObject:
   - component: {fileID: 1227177273}
   - component: {fileID: 1227177272}
   - component: {fileID: 1227177271}
+  - component: {fileID: 1227177274}
   m_Layer: 5
   m_Name: Road
   m_TagString: Untagged
@@ -2256,6 +2303,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1227177269}
   m_CullTransparentMesh: 1
+--- !u!114 &1227177274
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1227177269}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 60d825e01ea660f43940ca8466869d6f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playOnPress: 1
+  clip: {fileID: 0}
 --- !u!1 &1316888471
 GameObject:
   m_ObjectHideFlags: 0
@@ -3425,5 +3486,5 @@ SceneRoots:
   - {fileID: 925262587}
   - {fileID: 2085103979}
   - {fileID: 1148202333}
-  - {fileID: 157950619}
   - {fileID: 846421659}
+  - {fileID: 157950619}

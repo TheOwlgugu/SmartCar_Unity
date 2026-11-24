@@ -9,34 +9,52 @@ public class CameraController : MonoBehaviour
 
     [Header("Movement Settings")]
     [SerializeField] private float normalSpeed = 15f;
-    [SerializeField] private float boostMultiplier = 1.5f; // °´×¡ShiftµÄ¼ÓËÙ±¶ÂÊ
-    [SerializeField] private float minSpeed = 2f;          // ¹öÂÖÄÜµ÷µÄ×îµÍËÙ¶È
-    [SerializeField] private float maxSpeed = 100f;        // ¹öÂÖÄÜµ÷µÄ×î¸ßËÙ¶È
-    [SerializeField] private float speedScrollStep = 5f;   // ¹öÒ»¸ñ¹öÂÖ¸Ä±äµÄËÙ¶ÈÖµ
-    [SerializeField] private bool moveOnXZPlane = true;    // WASDÆ½ÒÆÊÇ·ñËø¶¨ÔÚË®Æ½Ãæ
+    [SerializeField] private float boostMultiplier = 1.5f; // æŒ‰ä½Shiftçš„åŠ é€Ÿå€ç‡
+    [SerializeField] private float minSpeed = 2f;          // æ»šè½®èƒ½è°ƒçš„æœ€ä½é€Ÿåº¦
+    [SerializeField] private float maxSpeed = 100f;        // æ»šè½®èƒ½è°ƒçš„æœ€é«˜é€Ÿåº¦
+    [SerializeField] private float speedScrollStep = 5f;   // æ»šä¸€æ ¼æ»šè½®æ”¹å˜çš„é€Ÿåº¦å€¼
+    [SerializeField] private bool moveOnXZPlane = true;    // WASDå¹³ç§»æ˜¯å¦é”å®šåœ¨æ°´å¹³é¢
+
+    [Header("Height Limit")]
+    [Tooltip("æ‘„åƒæœºå…è®¸çš„æœ€ä½ä¸–ç•Œ Yã€‚è®¾æˆ 0 å°±æ˜¯è´´åœ°ï¼Œé»˜è®¤ 1 é¿å…è´´é¢æ—¶çœ‹ä¸åˆ°æ ¼å­")]
+    [SerializeField] private float minHeight = 1f;
 
     private float rotationX = 0f;
     private float rotationY = 0f;
-    private float currentSpeed = 0f; // ÊµÊ±¼ÇÂ¼µ±Ç°µÄ»ù´¡ËÙ¶È
+    private float currentSpeed = 0f; // å®æ—¶è®°å½•å½“å‰çš„åŸºç¡€é€Ÿåº¦
 
     private void Start()
     {
-        // ³õÊ¼»¯½Ç¶ÈºÍËÙ¶È
+        // åˆå§‹åŒ–è§’åº¦å’Œé€Ÿåº¦
         Vector3 angles = transform.eulerAngles;
         rotationX = angles.y;
         rotationY = angles.x;
         currentSpeed = normalSpeed;
+
+        ClampHeight();
     }
 
     private void Update()
     {
-        // ºËĞÄÂß¼­£ºÖ»ÓĞ³¤°´Êó±êÓÒ¼üÊ±£¬²ÅÔÊĞíĞı×ªÊÓ½Ç¡¢WASDÒÆ¶¯ºÍ¹öÂÖµ÷ËÙ
+        // æ ¸å¿ƒé€»è¾‘ï¼šåªæœ‰é•¿æŒ‰é¼ æ ‡å³é”®æ—¶ï¼Œæ‰å…è®¸æ—‹è½¬è§†è§’ã€WASDç§»åŠ¨å’Œæ»šè½®è°ƒé€Ÿ
         if (Input.GetMouseButton(1))
         {
             HandleRotation();
             HandleSpeedScroll();
             HandleMovement();
         }
+
+        // ä¸è®ºæ˜¯å¦åœ¨ç§»åŠ¨ï¼Œéƒ½ä¸å…è®¸ä½äº minHeight
+        ClampHeight();
+    }
+
+    private void ClampHeight()
+    {
+        Vector3 position = transform.position;
+        if (position.y >= minHeight) return;
+
+        position.y = minHeight;
+        transform.position = position;
     }
 
     private void HandleRotation()
@@ -50,54 +68,54 @@ public class CameraController : MonoBehaviour
 
     private void HandleSpeedScroll()
     {
-        // ¶ÁÈ¡¹öÂÖÊäÈë£¬ÏòÇ°¹öÊÇÕıÊı£¬Ïòºó¹öÊÇ¸ºÊı
+        // è¯»å–æ»šè½®è¾“å…¥ï¼Œå‘å‰æ»šæ˜¯æ­£æ•°ï¼Œå‘åæ»šæ˜¯è´Ÿæ•°
         float scroll = Input.GetAxis("Mouse ScrollWheel");
         if (scroll != 0f)
         {
             currentSpeed += scroll * speedScrollStep;
             currentSpeed = Mathf.Clamp(currentSpeed, minSpeed, maxSpeed);
-            // Èç¹ûÏëÔÚ¿ØÖÆÌ¨¿´µ½ËÙ¶È±ä»¯£¬¿ÉÒÔÈ¡ÏûÏÂÃæÕâĞĞµÄ×¢ÊÍ
+            // å¦‚æœæƒ³åœ¨æ§åˆ¶å°çœ‹åˆ°é€Ÿåº¦å˜åŒ–ï¼Œå¯ä»¥å–æ¶ˆä¸‹é¢è¿™è¡Œçš„æ³¨é‡Š
             // Debug.Log("Current Speed: " + currentSpeed);
         }
     }
 
     private void HandleMovement()
     {
-        // 1. »ñÈ¡ WASD ÊäÈë
+        // 1. è·å– WASD è¾“å…¥
         float moveX = Input.GetAxisRaw("Horizontal"); // A / D
         float moveZ = Input.GetAxisRaw("Vertical");   // W / S
 
-        // 2. »ñÈ¡ Q / E Éı½µÊäÈë (Q ½µ£¬E Éı)
+        // 2. è·å– Q / E å‡é™è¾“å…¥ (Q é™ï¼ŒE å‡)
         float moveY = 0f;
         if (Input.GetKey(KeyCode.E)) moveY = 1f;
         if (Input.GetKey(KeyCode.Q)) moveY = -1f;
 
         if (moveX == 0 && moveZ == 0 && moveY == 0) return;
 
-        // 3. »ñÈ¡·½ÏòÏòÁ¿
+        // 3. è·å–æ–¹å‘å‘é‡
         Vector3 forward = transform.forward;
         Vector3 right = transform.right;
 
         if (moveOnXZPlane)
         {
-            // Ñ¹Æ½ÒÆ¶¯·½Ïò£¬·ÀÖ¹°´ W µÄÊ±ºòÍùµØµ×ÏÂ×ê
+            // å‹å¹³ç§»åŠ¨æ–¹å‘ï¼Œé˜²æ­¢æŒ‰ W çš„æ—¶å€™å¾€åœ°åº•ä¸‹é’»
             forward.y = 0;
             right.y = 0;
             forward.Normalize();
             right.Normalize();
         }
 
-        // 4. ×éºÏ×îÖÕÒÆ¶¯ÏòÁ¿
+        // 4. ç»„åˆæœ€ç»ˆç§»åŠ¨å‘é‡
         Vector3 moveDir = (forward * moveZ + right * moveX + Vector3.up * moveY).normalized;
 
-        // 5. ¼ÆËã×îÖÕËÙ¶È (°´×¡ Shift Ê±£¬ËÙ¶È³ËÒÔ±¶ÂÊ)
+        // 5. è®¡ç®—æœ€ç»ˆé€Ÿåº¦ (æŒ‰ä½ Shift æ—¶ï¼Œé€Ÿåº¦ä¹˜ä»¥å€ç‡)
         float finalSpeed = currentSpeed;
         if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
         {
             finalSpeed *= boostMultiplier;
         }
 
-        // 6. ÒÆ¶¯ÉãÏñ»ú
+        // 6. ç§»åŠ¨æ‘„åƒæœº
         transform.position += moveDir * finalSpeed * Time.deltaTime;
     }
 }

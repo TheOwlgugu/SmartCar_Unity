@@ -108,6 +108,14 @@ public class MapFileManager : MonoBehaviour
 
         Debug.Log("[MapFileManager] Saved: " + MapJson.FileFor(safeName));
 
+        // 同时生成配套的 _M（版本 + 默认起点/终点）
+        MapMetaData meta = new MapMetaData();
+        meta.Normalize(data.Width, data.Height);
+        if (!MapMetaJson.Save(safeName, meta, data.Width, data.Height))
+        {
+            Debug.LogWarning("[MapFileManager] 地图已创建，但 _M 保存失败: " + MapMetaJson.FileFor(safeName));
+        }
+
         if (refresher != null)
         {
             refresher.Refresh();
